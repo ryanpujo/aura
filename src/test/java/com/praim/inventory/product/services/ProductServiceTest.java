@@ -27,6 +27,7 @@ import com.praim.inventory.product.entities.Product;
 import com.praim.inventory.product.mappers.ProductCategoryMapper;
 import com.praim.inventory.product.mappers.ProductImageMapper;
 import com.praim.inventory.product.mappers.ProductMapper;
+import com.praim.inventory.product.repositories.CategoryRepo;
 import com.praim.inventory.product.repositories.ProductRepo;
 
 import java.util.*;
@@ -36,6 +37,9 @@ public class ProductServiceTest {
 
   @Mock
   private ProductRepo productRepo;
+
+  @Mock
+  private CategoryRepo categoryRepo;
 
   @InjectMocks
   private ProductService productService;
