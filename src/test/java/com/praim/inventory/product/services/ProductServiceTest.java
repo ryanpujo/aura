@@ -122,7 +122,7 @@ public class ProductServiceTest {
       Mockito.verify(productRepo, times(1)).findById(id);
     } else {
       var exMessage = assertThrows(exException, () -> productService.findByID(id));
-      assertEquals("user with id 3 not found", exMessage.getMessage());
+      assertEquals("Product with id 3 not found", exMessage.getMessage());
     }
   }
 
