@@ -2,6 +2,7 @@ package com.praim.inventory.common.exceptions;
 
 import java.time.LocalDateTime;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,5 +17,25 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
   public ResponseEntity<ErrorDetails> handleNotFoundException(Exception ex, WebRequest req) {
     var errDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), req.getDescription(false));
     return new ResponseEntity<ErrorDetails>(errDetails, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  public ResponseEntity<ErrorDetails> handleDataIntegrityException(Exception ex, WebRequest req) {
+    var errDetails = new ErrorDetails(
+      LocalDateTime.now(), 
+      ex.getMessage(), 
+      req.getDescription(false)
+    );
+    return new ResponseEntity<ErrorDetails>(errDetails, HttpStatus.CONFLICT);
+  }
+
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<ErrorDetails> handleAllException(Exception ex, WebRequest req) {
+    var errDetails = new ErrorDetails(
+      LocalDateTime.now(), 
+      ex.getMessage(), 
+      req.getDescription(false)
+    );
+    return new ResponseEntity<ErrorDetails>(errDetails, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }
