@@ -29,7 +29,7 @@ import java.util.*;
 @RequestMapping("/products")
 public class ProductController {
   
-  private ProductService productService;
+  private final ProductService productService;
 
   public ProductController(ProductService productService) {
     this.productService = productService;
@@ -61,8 +61,7 @@ public class ProductController {
 
   @GetMapping()
   public List<Product> findAll() {
-    var products = productService.findAll();
-    return products;
+    return productService.findAll();
   }
   
   
