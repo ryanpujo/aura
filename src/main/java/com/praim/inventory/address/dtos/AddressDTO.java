@@ -1,7 +1,5 @@
 package com.praim.inventory.address.dtos;
 
-import com.praim.inventory.address.entities.City;
-import com.praim.inventory.address.entities.StateProvince;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;

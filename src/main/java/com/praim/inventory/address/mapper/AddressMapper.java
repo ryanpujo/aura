@@ -1,9 +1,7 @@
 package com.praim.inventory.address.mapper;
 
 import com.praim.inventory.address.dtos.AddressDTO;
-import com.praim.inventory.address.dtos.CityDTO;
 import com.praim.inventory.address.entities.Address;
-import com.praim.inventory.address.entities.City;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
