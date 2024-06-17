@@ -14,5 +14,12 @@ public class AddressDTO {
     @NotNull(message = "postal code is required")
     private long postalCode;
 
-    private CityDTO cityDTO;
+    @NotNull(message = "city is required")
+    private String city;
+
+    @NotNull(message = "state is required")
+    private String stateProvince;
+
+    @NotNull(message = "country is required")
+    private String Country;
 }
