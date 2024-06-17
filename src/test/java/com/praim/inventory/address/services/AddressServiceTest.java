@@ -13,12 +13,18 @@ import com.praim.inventory.address.repositories.StateProvinceRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.stream.Stream;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
@@ -41,18 +47,17 @@ public class AddressServiceTest {
     @InjectMocks
     private AddressService addressService;
 
-    private AddressDTO addressDTO = new AddressDTO();
+    private static AddressDTO addressDTO = new AddressDTO();
 
-    private CityDTO cityDTO = new CityDTO();
+    private static CityDTO cityDTO = new CityDTO();
 
-    private StateProvinceDTO stateProvinceDTO = new StateProvinceDTO();
+    private static StateProvinceDTO stateProvinceDTO = new StateProvinceDTO();
 
-    private CountryDTO countryDTO  = new CountryDTO();
+    private static CountryDTO countryDTO  = new CountryDTO();
 
-    private Address address;
+    private static Address address;
 
-    @BeforeEach
-    void setUp() {
+    static void setUp() {
         countryDTO.setName("Indonesia");
         stateProvinceDTO.setName("Jakarta");
         stateProvinceDTO.setCountryDTO(countryDTO);
@@ -64,15 +69,33 @@ public class AddressServiceTest {
         address = AddressMapper.INSTANCE.toAddress(addressDTO);
     }
 
-    @Test
-    void givenAddress_WhenSave_ShouldReturn() {
-        when(mockAddressRepo.save(any())).thenReturn(address);
+    static Stream<Arguments> sourceSaveMethod() {
+        setUp();
+        return Stream.of(
+                Arguments.of(address, null),
+                Arguments.of(null, IllegalArgumentException.class)
+        );
+    }
 
-        var actual = addressService.save(addressDTO);
-        System.out.println(actual);
+    @ParameterizedTest
+    @MethodSource("sourceSaveMethod")
+    void givenAddress_WhenSave_ShouldReturn(Address exAddress, Class<? extends Exception> exception) {
+        when(mockAddressRepo.save(any())).thenAnswer(invocation -> {
+            if (exAddress == null) {
+                throw new IllegalArgumentException("failed to create");
+            }
+            return exAddress;
+        });
 
-        assertEquals(address, actual);
-        Mockito.verify(mockAddressRepo, times(1)).save(address);
-        Mockito.verify(mockCountryRepo, times(1)).findByName(countryDTO.getName());
+        if (exception == null) {
+            var actual = addressService.save(addressDTO);
+
+            assertEquals(address, actual);
+            Mockito.verify(mockAddressRepo, times(1)).save(address);
+            Mockito.verify(mockCountryRepo, times(1)).findByName(countryDTO.getName());
+        } else {
+            var result = assertThrows(exception, () -> addressService.save(addressDTO));
+            assertEquals("failed to create", result.getMessage());
+        }
     }
 }
