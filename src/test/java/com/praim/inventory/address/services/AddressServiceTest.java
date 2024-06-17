@@ -1,17 +1,12 @@
 package com.praim.inventory.address.services;
 
 import com.praim.inventory.address.dtos.AddressDTO;
-import com.praim.inventory.address.dtos.CityDTO;
-import com.praim.inventory.address.dtos.CountryDTO;
-import com.praim.inventory.address.dtos.StateProvinceDTO;
 import com.praim.inventory.address.entities.Address;
 import com.praim.inventory.address.mapper.AddressMapper;
 import com.praim.inventory.address.repositories.AddressRepo;
 import com.praim.inventory.address.repositories.CityRepo;
 import com.praim.inventory.address.repositories.CountryRepo;
 import com.praim.inventory.address.repositories.StateProvinceRepo;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

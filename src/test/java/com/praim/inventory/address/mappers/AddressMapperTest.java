@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AddressMapperTest {
 
-    private AddressDTO addressDTO = new AddressDTO();
+    private final AddressDTO addressDTO = new AddressDTO();
 
     @BeforeEach
     void setUp() {

@@ -1,9 +1,6 @@
 package com.praim.inventory.address.controllers;
 
 import com.praim.inventory.address.dtos.AddressDTO;
-import com.praim.inventory.address.dtos.CityDTO;
-import com.praim.inventory.address.dtos.CountryDTO;
-import com.praim.inventory.address.dtos.StateProvinceDTO;
 import com.praim.inventory.address.entities.Address;
 import com.praim.inventory.address.mapper.AddressMapper;
 import com.praim.inventory.address.services.AddressService;
@@ -17,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.endsWith;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
