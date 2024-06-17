@@ -42,7 +42,7 @@ public class AddressServiceTest {
     @InjectMocks
     private AddressService addressService;
 
-    private static AddressDTO addressDTO = new AddressDTO();
+    private final static AddressDTO addressDTO = new AddressDTO();
 
     private static Address address;
 

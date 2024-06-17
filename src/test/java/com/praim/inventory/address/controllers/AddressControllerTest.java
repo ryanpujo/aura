@@ -29,11 +29,11 @@ public class AddressControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private static AddressDTO addressDTO = new AddressDTO();
+    private final static AddressDTO addressDTO = new AddressDTO();
 
     private static Address address;
 
-    private String addressJSON = """
+    private final String addressJSON = """
                 {
                   "addressLine" : "destination address",
                   "postalCode" : 13630,
@@ -43,7 +43,7 @@ public class AddressControllerTest {
                 }
             """;
 
-    private String exLocation = String.format("http://localhost/addresses/%d", 1);
+    private final String exLocation = String.format("http://localhost/addresses/%d", 1);
     @BeforeEach
     void setUp() {
         addressDTO.setAddressLine("destination address");
@@ -52,7 +52,7 @@ public class AddressControllerTest {
         addressDTO.setStateProvince("Jakarta");
         addressDTO.setCountry("Indonesia");
         address = AddressMapper.INSTANCE.toAddress(addressDTO);
-        address.setId(1l);
+        address.setId(1L);
     }
 
     @Test
