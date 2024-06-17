@@ -17,6 +17,15 @@ public class AddressService {
     private final StateProvinceRepo stateProvinceRepo;
     private final CountryRepo countryRepo;
 
+
+    /**
+     * Constructs an AddressService with the necessary repositories.
+     *
+     * @param addressRepo         the repository for address data
+     * @param cityRepo            the repository for city data
+     * @param stateProvinceRepo   the repository for state/province data
+     * @param countryRepo         the repository for country data
+     */
     public AddressService(
             AddressRepo addressRepo,
             CityRepo cityRepo,
@@ -29,6 +38,12 @@ public class AddressService {
         this.countryRepo = countryRepo;
     }
 
+    /**
+     * Saves an address to the repository.
+     *
+     * @param addressDTO the DTO containing address information
+     * @return the saved Address entity
+     */
     public Address save(AddressDTO addressDTO) {
         var address = AddressMapper.INSTANCE.toAddress(addressDTO);
         var country = countryRepo.findByName(addressDTO.getCityDTO()
