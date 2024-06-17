@@ -46,14 +46,11 @@ public class AddressService {
      */
     public Address save(AddressDTO addressDTO) {
         var address = AddressMapper.INSTANCE.toAddress(addressDTO);
-        var country = countryRepo.findByName(addressDTO.getCityDTO()
-                .getStateProvinceDTO().getCountryDTO().getName())
+        var country = countryRepo.findByName(addressDTO.getCountry())
                 .orElseGet(() -> address.getCity().getStateProvince().getCountry());
-        var statePRovince = stateProvinceRepo
-                .findByName(addressDTO.getCityDTO().getStateProvinceDTO().getName())
+        var statePRovince = stateProvinceRepo.findByName(addressDTO.getStateProvince())
                 .orElseGet(() -> address.getCity().getStateProvince());
-        var city = cityRepo.findByName(addressDTO.getCityDTO().getName())
-                .orElseGet(address::getCity);
+        var city = cityRepo.findByName(addressDTO.getCity()).orElseGet(address::getCity);
         statePRovince.setCountry(country);
         city.setStateProvince(statePRovince);
         address.setCity(city);

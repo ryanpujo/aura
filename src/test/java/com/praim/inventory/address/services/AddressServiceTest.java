@@ -49,50 +49,41 @@ public class AddressServiceTest {
 
     private static AddressDTO addressDTO = new AddressDTO();
 
-    private static CityDTO cityDTO = new CityDTO();
-
-    private static StateProvinceDTO stateProvinceDTO = new StateProvinceDTO();
-
-    private static CountryDTO countryDTO  = new CountryDTO();
-
     private static Address address;
 
     static void setUp() {
-        countryDTO.setName("Indonesia");
-        stateProvinceDTO.setName("Jakarta");
-        stateProvinceDTO.setCountryDTO(countryDTO);
-        cityDTO.setName("Jakarta Timur");
-        cityDTO.setStateProvinceDTO(stateProvinceDTO);
         addressDTO.setAddressLine("destination address");
         addressDTO.setPostalCode(13630);
-        addressDTO.setCityDTO(cityDTO);
+        addressDTO.setCity("Jakarta Timur");
+        addressDTO.setStateProvince("Jakarta");
+        addressDTO.setCountry("Indonesia");
         address = AddressMapper.INSTANCE.toAddress(addressDTO);
     }
 
     static Stream<Arguments> sourceSaveMethod() {
         setUp();
         return Stream.of(
-                Arguments.of(address, null),
+                Arguments.of(addressDTO, null),
                 Arguments.of(null, IllegalArgumentException.class)
         );
     }
 
     @ParameterizedTest
     @MethodSource("sourceSaveMethod")
-    void givenAddress_WhenSave_ShouldReturn(Address exAddress, Class<? extends Exception> exception) {
+    void givenAddress_WhenSave_ShouldReturn(AddressDTO exArg, Class<? extends Exception> exception) {
         when(mockAddressRepo.save(any())).thenAnswer(invocation -> {
-            if (exAddress == null) {
+            if (exArg == null) {
                 throw new IllegalArgumentException("failed to create");
             }
-            return exAddress;
+            return address;
         });
 
         if (exception == null) {
-            var actual = addressService.save(addressDTO);
+            var actual = addressService.save(exArg);
 
             assertEquals(address, actual);
             Mockito.verify(mockAddressRepo, times(1)).save(address);
-            Mockito.verify(mockCountryRepo, times(1)).findByName(countryDTO.getName());
+            Mockito.verify(mockCountryRepo, times(1)).findByName(addressDTO.getCountry());
         } else {
             var result = assertThrows(exception, () -> addressService.save(addressDTO));
             assertEquals("failed to create", result.getMessage());
