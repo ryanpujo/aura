@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String addressLine;
@@ -17,7 +17,8 @@ public class Address {
     @Column(nullable = false)
     private long postalCode;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "city_id")
     @EqualsAndHashCode.Exclude
     private City city;
 }

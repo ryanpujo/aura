@@ -12,12 +12,13 @@ import java.util.List;
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(nullable = false, unique = true)
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "state_province_id")
     @EqualsAndHashCode.Exclude
     private StateProvince stateProvince;
 
