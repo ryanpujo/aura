@@ -16,7 +16,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<ErrorDetails> handleNotFoundException(Exception ex, WebRequest req) {
     var errDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), req.getDescription(false));
-    return new ResponseEntity<ErrorDetails>(errDetails, HttpStatus.NOT_FOUND);
+    return new ResponseEntity<>(errDetails, HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler(DataIntegrityViolationException.class)
@@ -26,7 +26,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
       ex.getMessage(), 
       req.getDescription(false)
     );
-    return new ResponseEntity<ErrorDetails>(errDetails, HttpStatus.CONFLICT);
+    return new ResponseEntity<>(errDetails, HttpStatus.CONFLICT);
   }
 
   @ExceptionHandler(Exception.class)
@@ -36,6 +36,6 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
       ex.getMessage(), 
       req.getDescription(false)
     );
-    return new ResponseEntity<ErrorDetails>(errDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(errDetails, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }
