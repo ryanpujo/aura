@@ -48,9 +48,9 @@ public class AddressService {
         var address = AddressMapper.INSTANCE.toAddress(addressDTO);
         var country = countryRepo.findByName(addressDTO.getCountry())
                 .orElseGet(() -> address.getCity().getStateProvince().getCountry());
-        var statePRovince = stateProvinceRepo.findByName(addressDTO.getStateProvince())
+        var statePRovince = stateProvinceRepo.findByNameAndCountryId(addressDTO.getStateProvince(), country.getId())
                 .orElseGet(() -> address.getCity().getStateProvince());
-        var city = cityRepo.findByName(addressDTO.getCity()).orElseGet(address::getCity);
+        var city = cityRepo.findByNameAndStateProvinceId(addressDTO.getCity(), statePRovince.getId()).orElseGet(address::getCity);
         statePRovince.setCountry(country);
         city.setStateProvince(statePRovince);
         address.setCity(city);

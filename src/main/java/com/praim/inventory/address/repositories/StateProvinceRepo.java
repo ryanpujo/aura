@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface StateProvinceRepo extends JpaRepository<StateProvince, Long> {
-    Optional<StateProvince> findByName(String name);
+    Optional<StateProvince> findByNameAndCountryId(String stateName, long countryID);
 }

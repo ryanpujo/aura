@@ -33,16 +33,6 @@ public class AddressControllerTest {
 
     private static Address address;
 
-    private final String addressJSON = """
-                {
-                  "addressLine" : "destination address",
-                  "postalCode" : 13630,
-                  "city" : "Jakarta Timur",
-                  "stateProvince" : "Jakarta",
-                  "Country" : "Indonesia"
-                }
-            """;
-
     private final String exLocation = String.format("http://localhost/addresses/%d", 1);
     @BeforeEach
     void setUp() {
@@ -52,13 +42,22 @@ public class AddressControllerTest {
         addressDTO.setStateProvince("Jakarta");
         addressDTO.setCountry("Indonesia");
         address = AddressMapper.INSTANCE.toAddress(addressDTO);
-        address.setId(1L);
+        address.setId(1l);
     }
 
     @Test
     public void givenAddressDTO_WhenCreate_ShouldReturn() throws Exception {
         when(addressService.save(any())).thenReturn(address);
 
+        String addressJSON = """
+                    {
+                      "addressLine" : "destination address",
+                      "postalCode" : 13630,
+                      "city" : "Jakarta Timur",
+                      "stateProvince" : "Jakarta",
+                      "country" : "Indonesia"
+                    }
+                """;
         mockMvc.perform(post("/addresses")
                 .content(addressJSON).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())

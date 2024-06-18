@@ -21,5 +21,5 @@ public class AddressDTO {
     private String stateProvince;
 
     @NotNull(message = "country is required")
-    private String Country;
+    private String country;
 }

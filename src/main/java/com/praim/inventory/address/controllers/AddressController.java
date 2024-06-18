@@ -14,11 +14,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequestMapping("/addresses")
 public class AddressController {
 
+    private final AddressService addressService;
+
     public AddressController(AddressService addressService) {
         this.addressService = addressService;
     }
-
-    private final AddressService addressService;
 
 
     @PostMapping
