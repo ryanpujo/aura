@@ -1,6 +1,5 @@
 package com.praim.inventory.warehouse.services;
 
-import com.praim.inventory.address.repositories.AddressRepo;
 import com.praim.inventory.address.services.AddressService;
 import com.praim.inventory.warehouse.dtos.WarehouseDTO;
 import com.praim.inventory.warehouse.entities.Warehouse;
