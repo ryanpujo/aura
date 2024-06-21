@@ -1,20 +1,22 @@
 package com.praim.inventory.address.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.util.List;
 
 @Entity(name = "cities")
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"name", "state_province_id"}))
 @Data
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false)
+    @NonNull
     private String name;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
