@@ -2,7 +2,10 @@ package com.praim.inventory.address.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity(name = "state_provinces")
@@ -26,4 +29,10 @@ public class StateProvince {
 
     @OneToMany(mappedBy = "stateProvince", cascade = CascadeType.ALL)
     private List<City> cities;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }

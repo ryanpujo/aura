@@ -3,6 +3,10 @@ package com.praim.inventory.address.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity(name = "addresses")
 @Data
@@ -21,4 +25,10 @@ public class Address {
     @JoinColumn(name = "city_id")
     @EqualsAndHashCode.Exclude
     private City city;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }

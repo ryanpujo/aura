@@ -5,6 +5,10 @@ import com.praim.inventory.address.entities.Address;
 import com.praim.inventory.warehouse.WarehouseStatus;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 
 @Entity(name = "warehouses")
@@ -22,4 +26,10 @@ public class Warehouse {
 
     @Column(nullable = false)
     private WarehouseStatus status;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }
