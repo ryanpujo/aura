@@ -37,8 +37,8 @@ public class Product {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @Column(nullable = false)
-    private int quantityInStock;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductVariant> productVariants;
 
     @Column(nullable = false)
     private String imageUrl; // You might still want a main image for quick reference
