@@ -1,5 +1,6 @@
 package com.praim.inventory.warehouse.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.praim.inventory.address.dtos.AddressDTO;
 import com.praim.inventory.warehouse.WarehouseStatus;
 import jakarta.validation.constraints.NotNull;
@@ -15,5 +16,6 @@ public class WarehouseDTO {
     private WarehouseStatus status;
 
     @NotNull(message = "address is required")
+    @JsonProperty("address")
     private AddressDTO addressDTO;
 }
