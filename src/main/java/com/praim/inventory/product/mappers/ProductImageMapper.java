@@ -4,13 +4,14 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 import com.praim.inventory.product.dtos.ProductImageDTO;
 import com.praim.inventory.product.entities.ProductImage;
 
 // Mapper Interface
-@Mapper
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ProductImageMapper {
     ProductImageMapper INSTANCE = Mappers.getMapper(ProductImageMapper.class); 
 

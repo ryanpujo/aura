@@ -4,9 +4,10 @@ import com.praim.inventory.address.dtos.AddressDTO;
 import com.praim.inventory.address.entities.Address;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = {CityMapper.class})
+@Mapper(uses = {CityMapper.class}, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AddressMapper {
 
     AddressMapper INSTANCE = Mappers.getMapper(AddressMapper.class);

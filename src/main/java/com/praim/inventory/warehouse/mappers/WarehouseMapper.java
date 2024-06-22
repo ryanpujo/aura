@@ -5,9 +5,10 @@ import com.praim.inventory.warehouse.dtos.WarehouseDTO;
 import com.praim.inventory.warehouse.entities.Warehouse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(uses = AddressMapper.class)
+@Mapper(uses = AddressMapper.class, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface WarehouseMapper {
 
     WarehouseMapper INSTANCE = Mappers.getMapper(WarehouseMapper.class);
