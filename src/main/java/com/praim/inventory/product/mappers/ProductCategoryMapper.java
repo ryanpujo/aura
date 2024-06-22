@@ -11,7 +11,7 @@ import com.praim.inventory.product.dtos.ProductCategoryDTO;
 import com.praim.inventory.product.entities.ProductCategory;
 
 // Mapper Interface
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper()
 public interface ProductCategoryMapper {
     ProductCategoryMapper INSTANCE = Mappers.getMapper(ProductCategoryMapper.class); 
 
