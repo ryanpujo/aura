@@ -16,15 +16,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProductMapperTest {
 
-    private ProductDTO productDTO = new ProductDTO();
+    private final ProductDTO productDTO = new ProductDTO();
 
-    private ProductVariantDTO productVariantDTO = ProductVariantDTO.builder()
+    private final ProductVariantDTO productVariantDTO = ProductVariantDTO.builder()
             .color("Black Mate").size("50x50").stock(50).additionalPrice(new BigDecimal(300))
             .build();
 
-    private ProductImageDTO productImageDTO = new ProductImageDTO();
+    private final ProductImageDTO productImageDTO = new ProductImageDTO();
 
-    private ProductCategoryDTO productCategoryDTO = new ProductCategoryDTO();
+    private final ProductCategoryDTO productCategoryDTO = new ProductCategoryDTO();
 
     private List<ProductVariant> productVariants;
 

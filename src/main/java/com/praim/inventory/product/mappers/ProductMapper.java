@@ -2,7 +2,6 @@ package com.praim.inventory.product.mappers;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 import com.praim.inventory.product.dtos.ProductDTO;

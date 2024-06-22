@@ -44,17 +44,17 @@ public class ProductServiceTest {
   @InjectMocks
   private ProductService productService;
 
-  private static List<ProductImageDTO> images = Arrays.asList(
+  private static final List<ProductImageDTO> images = Arrays.asList(
     new ProductImageDTO("image"),
     new ProductImageDTO("image1")
   );
 
-  private static List<ProductCategoryDTO> categories = Arrays.asList(
+  private static final List<ProductCategoryDTO> categories = Arrays.asList(
     new ProductCategoryDTO("gadget"),
     new ProductCategoryDTO("gadget1")
   );
 
-  private static ProductDTO dto = new ProductDTO();
+  private static final ProductDTO dto = new ProductDTO();
   private static Product tesProduct;
 
   public static void setUp() {
@@ -103,8 +103,8 @@ public class ProductServiceTest {
   public static Stream<Arguments> findByIdSourceData() {
     setUp();
     return Stream.of(
-      Arguments.of(3l, Optional.of(tesProduct), null),
-      Arguments.of(3l, Optional.empty(), NotFoundException.class)
+      Arguments.of(3L, Optional.of(tesProduct), null),
+      Arguments.of(3L, Optional.empty(), NotFoundException.class)
     );
   }
 
