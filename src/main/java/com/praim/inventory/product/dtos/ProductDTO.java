@@ -29,17 +29,17 @@ public class ProductDTO {
   @DecimalMin(value = "0.01", message = "Price must be greater than zero")
   private BigDecimal price;
 
-  @NotNull(message = "Quantity in stock is required")
-  @Min(value = 1, message = "Quantity must be greater than zero")
-  @JsonProperty("stock")
-  private int quantityInStock;
+  @NotNull(message = "variant is required")
+  private List<ProductVariantDTO> variants;
 
   @JsonProperty("image_url")
   @NotNull(message = "main image is required")
   private String imageUrl; // Main image URL
 
+  @NotNull(message = "images is required")
   private List<ProductImageDTO> images; // List of image DTOs
 
+  @NotNull(message = "categories is required")
   private List<ProductCategoryDTO> categories; // List of category DTOs
 }
 
