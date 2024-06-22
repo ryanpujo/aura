@@ -60,10 +60,10 @@ public class WarehouseControllerTest {
                         "name" : "gudang garam",
                         "status" : "OPERATIONAL",
                         "address" : {
-                            "addressLine": "jl. mayjen sutoyo",
-                            "postalCode": 13630,
+                            "address_line": "jl. mayjen sutoyo",
+                            "postal_code": 13630,
                             "city": "Jakarta Timur",
-                            "stateProvince": "Jakarta",
+                            "state_province": "Jakarta",
                             "country": "Indonesia"
                         }
                     }

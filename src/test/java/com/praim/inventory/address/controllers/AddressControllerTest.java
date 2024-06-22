@@ -42,7 +42,7 @@ public class AddressControllerTest {
         addressDTO.setStateProvince("Jakarta");
         addressDTO.setCountry("Indonesia");
         address = AddressMapper.INSTANCE.toAddress(addressDTO);
-        address.setId(1l);
+        address.setId(1L);
     }
 
     @Test
@@ -51,10 +51,10 @@ public class AddressControllerTest {
 
         String addressJSON = """
                     {
-                      "addressLine" : "destination address",
-                      "postalCode" : 13630,
+                      "address_line" : "destination address",
+                      "postal_code" : 13630,
                       "city" : "Jakarta Timur",
-                      "stateProvince" : "Jakarta",
+                      "state_province" : "Jakarta",
                       "country" : "Indonesia"
                     }
                 """;

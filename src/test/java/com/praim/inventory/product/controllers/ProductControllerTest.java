@@ -42,46 +42,37 @@ public class ProductControllerTest {
   @Autowired
   private MockMvc mockMvc;
 
-  private static ProductDTO productDTO;
+    private static Product tesProduct;
 
-  private static String jsonString = """
-            {
-              "name": "Sample Product",
-              "description": "This is a sample product.",
-              "price": 99.99,
-              "quantityInStock": 50,
-              "imageUrl": "https://example.com/product.jpg",
-              "images": [
-                {
-                  "imageUrl": "https://example.com/image1.jpg"
-                },
-                {
-                  "imageUrl": "https://example.com/image2.jpg"
-                }
-              ],
-              "categories": [
-                {
-                  "name": "Electronics"
-                },
-                {
-                  "name": "Gadgets"
-                }
-              ]
-            }
-            """;
+    public static void setUp() {
+      ProductDTO productDTO = new ProductDTO();
 
-    private static String badJsonString = """
+    productDTO.setName("Awesome Gadget");
+    productDTO.setDescription("A fantastic new gadget that will change your life.");
+    productDTO.setPrice(new BigDecimal("49.99"));
+    productDTO.setQuantityInStock(100);
+    productDTO.setImageUrl("https://example.com/gadget.jpg");
+
+    tesProduct = ProductMapper.INSTANCE.toEntity(productDTO);
+    tesProduct.setId(1L);
+  }
+
+  public static Stream<Arguments> createProductSource() {
+    setUp();
+      String tResponseEntity = String.format("http://localhost/products/%d", 1);
+
+      String badJsonString = """
               {
                 "description": "This is a sample product.",
                 "price": 99.99,
-                "quantityInStock": 50,
-                "imageUrl": "https://example.com/product.jpg",
+                "stock": 50,
+                "image_url": "https://example.com/product.jpg",
                 "images": [
                   {
-                    "imageUrl": "https://example.com/image1.jpg"
+                    "image_url": "https://example.com/image1.jpg"
                   },
                   {
-                    "imageUrl": "https://example.com/image2.jpg"
+                    "image_url": "https://example.com/image2.jpg"
                   }
                 ],
                 "categories": [
@@ -94,28 +85,32 @@ public class ProductControllerTest {
                 ]
               }
               """;
-
-  private static Product tesProduct;
-  private static String tResponseEntity;
-
-  public static void setUp() {
-    productDTO = new ProductDTO();
-
-    productDTO.setName("Awesome Gadget");
-    productDTO.setDescription("A fantastic new gadget that will change your life.");
-    productDTO.setPrice(new BigDecimal("49.99"));
-    productDTO.setQuantityInStock(100);
-    productDTO.setImageUrl("https://example.com/gadget.jpg");
-
-    tesProduct = ProductMapper.INSTANCE.toEntity(productDTO);
-    tesProduct.setId(1l);
-  }
-
-  public static Stream<Arguments> createProductSource() {
-    setUp();
-    tResponseEntity = String.format("http://localhost/products/%d", 1);
-
-    return Stream.of(
+      String jsonString = """
+              {
+                "name": "Sample Product",
+                "description": "This is a sample product.",
+                "price": 99.99,
+                "stock": 50,
+                "image_url": "https://example.com/product.jpg",
+                "images": [
+                  {
+                    "image_url": "https://example.com/image1.jpg"
+                  },
+                  {
+                    "image_url": "https://example.com/image2.jpg"
+                  }
+                ],
+                "categories": [
+                  {
+                    "name": "Electronics"
+                  },
+                  {
+                    "name": "Gadgets"
+                  }
+                ]
+              }
+              """;
+      return Stream.of(
       Arguments.of(jsonString, header().string("Location", Matchers.endsWith(tResponseEntity)), status().isCreated()),
       Arguments.of(badJsonString, header().string("Location", Matchers.blankOrNullString()), status().isBadRequest())
     );
@@ -137,12 +132,12 @@ public class ProductControllerTest {
   }
 
 
-  private static String errMessage = String.format("Product with id %d is not available", 1);
+  private static final String errMessage = String.format("Product with id %d is not available", 1);
   public static Stream<Arguments> findByIDSource() {
     setUp();
     return Stream.of(
-      Arguments.of(1l, status().isOk(), jsonPath("$.name").value(tesProduct.getName()), tesProduct),
-      Arguments.of(1l, status().isNotFound(), jsonPath("$.message").value(errMessage), null)
+      Arguments.of(1L, status().isOk(), jsonPath("$.name").value(tesProduct.getName()), tesProduct),
+      Arguments.of(1L, status().isNotFound(), jsonPath("$.message").value(errMessage), null)
     );
   }
   

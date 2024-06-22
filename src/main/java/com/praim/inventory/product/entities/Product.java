@@ -40,7 +40,7 @@ public class Product {
     @Column(nullable = false)
     private int quantityInStock;
 
-    @Column
+    @Column(nullable = false)
     private String imageUrl; // You might still want a main image for quick reference
 
     @CreationTimestamp

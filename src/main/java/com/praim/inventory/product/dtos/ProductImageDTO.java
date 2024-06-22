@@ -1,5 +1,6 @@
 package com.praim.inventory.product.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class ProductImageDTO {
   @NotNull(message = "Image URL is required")
+  @JsonProperty("image_url")
   private String imageUrl;
 
   // Optional:

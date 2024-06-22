@@ -3,6 +3,7 @@ package com.praim.inventory.product.dtos;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -29,9 +30,12 @@ public class ProductDTO {
   private BigDecimal price;
 
   @NotNull(message = "Quantity in stock is required")
-  @Min(value = 0, message = "Quantity must be zero or greater")
+  @Min(value = 1, message = "Quantity must be greater than zero")
+  @JsonProperty("stock")
   private int quantityInStock;
 
+  @JsonProperty("image_url")
+  @NotNull(message = "main image is required")
   private String imageUrl; // Main image URL
 
   private List<ProductImageDTO> images; // List of image DTOs
