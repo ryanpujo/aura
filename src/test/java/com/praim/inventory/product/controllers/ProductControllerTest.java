@@ -106,6 +106,20 @@ public class ProductControllerTest {
                   {
                     "name": "Gadgets"
                   }
+                ],
+                "variants": [
+                  {
+                    "size": "50x50",
+                    "color": "White",
+                    "additional_price": 20,
+                    "stock": 10
+                  },
+                  {
+                    "size": "50x50",
+                    "color": "Black",
+                    "additional_price": 10,
+                    "stock": 10
+                  }
                 ]
               }
               """;

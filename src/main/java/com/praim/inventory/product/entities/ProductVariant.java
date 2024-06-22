@@ -34,6 +34,7 @@ public class ProductVariant {
 
     @ManyToOne
     @EqualsAndHashCode.Exclude
+    @Setter
     private Product product;
 
     @CreationTimestamp

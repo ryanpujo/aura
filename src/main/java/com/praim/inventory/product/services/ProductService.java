@@ -8,13 +8,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.praim.inventory.common.exceptions.NotFoundException;
-import com.praim.inventory.product.dtos.ProductCategoryDTO;
 import com.praim.inventory.product.dtos.ProductDTO;
 import com.praim.inventory.product.entities.Product;
 import com.praim.inventory.product.entities.ProductCategory;
 import com.praim.inventory.product.entities.ProductImage;
-import com.praim.inventory.product.mappers.ProductCategoryMapper;
-import com.praim.inventory.product.mappers.ProductImageMapper;
 import com.praim.inventory.product.mappers.ProductMapper;
 import com.praim.inventory.product.repositories.CategoryRepo;
 import com.praim.inventory.product.repositories.ProductRepo;
@@ -49,12 +46,11 @@ public class ProductService {
    * @return The saved product entity.
    */
   public Product save(ProductDTO dto) {
-    List<ProductCategory> categories = mapCategories(dto.getCategories());
-    List<ProductImage> images = ProductImageMapper.INSTANCE.toEntityList(dto.getImages());
     Product product = ProductMapper.INSTANCE.toEntity(dto);
-    linkImagesToProduct(images, product);
+    List<ProductCategory> categories = mapCategories(product.getCategories());
+    linkImagesToProduct(product.getImages(), product);
+    product.getProductVariants().forEach(variant -> variant.setProduct(product));
     product.setCategories(categories);
-    product.setImages(images);
     return productRepo.save(product);
   }
 
@@ -84,16 +80,16 @@ public class ProductService {
   /**
    * Maps category DTOs to entities and retrieves existing categories.
    *
-   * @param categoryDTOs The list of category DTOs.
+   * @param categories The list of category DTOs.
    * @return A list of category entities.
    */
-  private List<ProductCategory> mapCategories(List<ProductCategoryDTO> categoryDTOs) {
-    List<ProductCategory> categories = new ArrayList<>();
-    categoryDTOs.forEach(categoryDTO -> {
-      Optional<ProductCategory> found = categoryRepo.findByName(categoryDTO.getName());
-      categories.add(found.orElseGet(() -> ProductCategoryMapper.INSTANCE.toEntity(categoryDTO)));
+  private List<ProductCategory> mapCategories(List<ProductCategory> categories) {
+    List<ProductCategory> categoriesFound = new ArrayList<>();
+    categories.forEach(category -> {
+      Optional<ProductCategory> found = categoryRepo.findByName(category.getName());
+      categoriesFound.add(found.orElse(category));
     });
-    return categories;
+    return categoriesFound;
   }
 
   /**

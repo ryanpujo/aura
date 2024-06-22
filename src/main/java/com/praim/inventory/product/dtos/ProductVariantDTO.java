@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.math.BigDecimal;
 
 @Builder
 @Getter
+@EqualsAndHashCode
 public class ProductVariantDTO {
 
     @NotNull(message = "size is required")

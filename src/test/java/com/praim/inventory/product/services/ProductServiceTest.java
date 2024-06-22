@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import java.math.BigDecimal;
 import java.util.stream.Stream;
 
+import com.praim.inventory.product.dtos.ProductVariantDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,8 +25,6 @@ import com.praim.inventory.product.dtos.ProductCategoryDTO;
 import com.praim.inventory.product.dtos.ProductDTO;
 import com.praim.inventory.product.dtos.ProductImageDTO;
 import com.praim.inventory.product.entities.Product;
-import com.praim.inventory.product.mappers.ProductCategoryMapper;
-import com.praim.inventory.product.mappers.ProductImageMapper;
 import com.praim.inventory.product.mappers.ProductMapper;
 import com.praim.inventory.product.repositories.CategoryRepo;
 import com.praim.inventory.product.repositories.ProductRepo;
@@ -54,6 +53,11 @@ public class ProductServiceTest {
     new ProductCategoryDTO("gadget1")
   );
 
+  private static final List<ProductVariantDTO> variants = List.of(
+          ProductVariantDTO.builder().size("50x50").stock(50)
+                  .color("Black Mate").additionalPrice(new BigDecimal(20)).build()
+  );
+
   private static final ProductDTO dto = new ProductDTO();
   private static Product tesProduct;
 
@@ -61,12 +65,11 @@ public class ProductServiceTest {
     dto.setName("Awesome Gadget");
     dto.setDescription("A fantastic new gadget that will change your life.");
     dto.setPrice(new BigDecimal("49.99"));
+    dto.setVariants(variants);
     dto.setImageUrl("https://example.com/gadget.jpg");
     dto.setCategories(categories);
     dto.setImages(images);
     tesProduct = ProductMapper.INSTANCE.toEntity(dto);
-    tesProduct.setCategories(ProductCategoryMapper.INSTANCE.toEntityList(categories));
-    tesProduct.setImages(ProductImageMapper.INSTANCE.toEntityList(images));
   }
 
   static Stream<Arguments> saveSourceData() {
