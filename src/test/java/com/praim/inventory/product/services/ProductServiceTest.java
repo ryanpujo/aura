@@ -61,7 +61,6 @@ public class ProductServiceTest {
     dto.setName("Awesome Gadget");
     dto.setDescription("A fantastic new gadget that will change your life.");
     dto.setPrice(new BigDecimal("49.99"));
-    dto.setQuantityInStock(100);
     dto.setImageUrl("https://example.com/gadget.jpg");
     dto.setCategories(categories);
     dto.setImages(images);

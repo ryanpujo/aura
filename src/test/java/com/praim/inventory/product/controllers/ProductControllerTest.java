@@ -50,7 +50,6 @@ public class ProductControllerTest {
     productDTO.setName("Awesome Gadget");
     productDTO.setDescription("A fantastic new gadget that will change your life.");
     productDTO.setPrice(new BigDecimal("49.99"));
-    productDTO.setQuantityInStock(100);
     productDTO.setImageUrl("https://example.com/gadget.jpg");
 
     tesProduct = ProductMapper.INSTANCE.toEntity(productDTO);
