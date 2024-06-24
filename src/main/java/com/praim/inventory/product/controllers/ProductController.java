@@ -1,6 +1,6 @@
 package com.praim.inventory.product.controllers;
 
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.praim.inventory.product.dtos.ProductDTO;
@@ -15,11 +15,6 @@ import jakarta.validation.Valid;
 import org.springframework.hateoas.EntityModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.*;
 
@@ -36,9 +31,11 @@ public class ProductController {
   }
 
   @PostMapping
-  public ResponseEntity<Product> createProduct(@Valid @RequestBody ProductDTO productDTO) {
-    var productCreated = productService.save(productDTO);
-    var uri = ServletUriComponentsBuilder.fromCurrentRequest()
+  public ResponseEntity<Product> createProduct(
+          @Valid @RequestBody ProductDTO productDTO,
+          @RequestParam("warehouse") long id) {
+    var productCreated = productService.save(productDTO, id);
+    var uri = ServletUriComponentsBuilder.fromCurrentRequest().replaceQuery(null)
       .path("/{id}")
       .buildAndExpand(productCreated.getId())
       .toUri();

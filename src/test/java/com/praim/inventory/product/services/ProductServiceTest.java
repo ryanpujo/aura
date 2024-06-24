@@ -3,13 +3,17 @@ package com.praim.inventory.product.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 import java.math.BigDecimal;
 import java.util.stream.Stream;
 
 import com.praim.inventory.product.dtos.ProductVariantDTO;
+import com.praim.inventory.product.entities.ProductInventory;
+import com.praim.inventory.product.repositories.ProductInventoryRepo;
+import com.praim.inventory.warehouse.entities.Warehouse;
+import com.praim.inventory.warehouse.repositories.WarehouseRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,7 +21,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.praim.inventory.common.exceptions.NotFoundException;
@@ -36,6 +39,12 @@ public class ProductServiceTest {
 
   @Mock
   private ProductRepo productRepo;
+
+  @Mock
+  private WarehouseRepo warehouseRepo;
+
+  @Mock
+  private ProductInventoryRepo inventoryRepo;
 
   @Mock
   private CategoryRepo categoryRepo;
@@ -60,6 +69,8 @@ public class ProductServiceTest {
 
   private static final ProductDTO dto = new ProductDTO();
   private static Product tesProduct;
+  private static final Warehouse warehouse = new Warehouse();
+  private static ProductInventory productInventory;
 
   public static void setUp() {
     dto.setName("Awesome Gadget");
@@ -70,13 +81,17 @@ public class ProductServiceTest {
     dto.setCategories(categories);
     dto.setImages(images);
     tesProduct = ProductMapper.INSTANCE.toEntity(dto);
+    productInventory = ProductInventory.builder()
+            .product(tesProduct).stock(variants.stream().mapToInt(ProductVariantDTO::getStock).sum())
+            .warehouse(warehouse)
+            .build();
   }
 
   static Stream<Arguments> saveSourceData() {
     setUp();
     return Stream.of(
-      Arguments.of(dto, tesProduct, null),
-      Arguments.of(dto, null, IllegalArgumentException.class)
+      Arguments.of(dto, productInventory, Optional.of(warehouse), null),
+      Arguments.of(dto, null, Optional.empty(), NotFoundException.class)
     );
   }
 
@@ -84,22 +99,23 @@ public class ProductServiceTest {
   @MethodSource("saveSourceData")
   public void givenProduct_WhenSave_ThenReturnProductOrThrows(
     ProductDTO arg, 
-    Product exProduct, 
+    ProductInventory exProduct,
+    Optional<Warehouse> expectedWarehouse,
     Class<? extends Exception> expectedException
     ) {
-    when(productRepo.save(tesProduct)).thenAnswer((invocation) -> {
-      if (exProduct == null) {
-        throw new IllegalArgumentException("data invalid");
-      }
-      return exProduct;
-    });
+    when(warehouseRepo.findById(1L)).thenReturn(expectedWarehouse);
+    if (expectedWarehouse.isPresent()) {
+      when(inventoryRepo.save(any())).thenReturn(exProduct);
+    }
 
     if (expectedException == null) {
-      var product = productService.save(arg);
-      assertEquals(exProduct, product);
-      Mockito.verify(productRepo, times(1)).save(tesProduct);
+      var product = productService.save(arg, 1);
+      assertEquals(tesProduct, product);
+      verify(inventoryRepo, times(1)).save(exProduct);
+      verify(productRepo, times(1)).save(tesProduct);
     } else {
-      assertThrows(expectedException, () -> productService.save(arg));
+      var result = assertThrows(expectedException, () -> productService.save(arg, 1));
+      assertEquals(String.format("warehouse with id %d is not found", 1), result.getMessage());
     }
   }
 
@@ -121,7 +137,7 @@ public class ProductServiceTest {
       var product = productService.findByID(id);
 
       assertEquals(exProduct.get(), product);
-      Mockito.verify(productRepo, times(1)).findById(id);
+      verify(productRepo, times(1)).findById(id);
     } else {
       var exMessage = assertThrows(exException, () -> productService.findByID(id));
       assertEquals("Product with id 3 not found", exMessage.getMessage());

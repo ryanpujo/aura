@@ -13,11 +13,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
+import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
@@ -54,6 +53,8 @@ public class ProductControllerTest {
 
     tesProduct = ProductMapper.INSTANCE.toEntity(productDTO);
     tesProduct.setId(1L);
+      System.out.println("inside set up " + tesProduct);
+
   }
 
   public static Stream<Arguments> createProductSource() {
@@ -89,7 +90,6 @@ public class ProductControllerTest {
                 "name": "Sample Product",
                 "description": "This is a sample product.",
                 "price": 99.99,
-                "stock": 50,
                 "image_url": "https://example.com/product.jpg",
                 "images": [
                   {
@@ -128,16 +128,15 @@ public class ProductControllerTest {
       Arguments.of(badJsonString, header().string("Location", Matchers.blankOrNullString()), status().isBadRequest())
     );
   }
-
   @ParameterizedTest
   @MethodSource("createProductSource")
   public void givenProduct_WhenCreateProduct_ShouldResponse(
     String json, 
     ResultMatcher exLocation,
     ResultMatcher exStatusCode) throws Exception {
-    when(mProductService.save(any())).thenReturn(tesProduct);
+    when(mProductService.save(any(), anyLong())).thenReturn(tesProduct);
 
-    mockMvc.perform(post("/products")
+    mockMvc.perform(post("/products?warehouse=1")
       .content(json) 
       .contentType(MediaType.APPLICATION_JSON)
     ).andExpect(exStatusCode)

@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class WarehouseDTO {
 
-    @NotNull(message = "name is required")
+//    @NotNull(message = "name is required")
     private String name;
 
     @NotNull(message = "status is required")

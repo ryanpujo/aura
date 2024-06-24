@@ -3,6 +3,7 @@ package com.praim.inventory.product.entities;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -59,5 +60,8 @@ public class Product {
         inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private List<ProductCategory> categories;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ProductInventory> inventories;
 }
 
