@@ -91,6 +91,7 @@ public class ProductControllerTest {
                 "description": "This is a sample product.",
                 "price": 99.99,
                 "image_url": "https://example.com/product.jpg",
+                "sku": "363728",
                 "images": [
                   {
                     "image_url": "https://example.com/image1.jpg"
