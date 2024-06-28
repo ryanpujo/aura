@@ -28,6 +28,9 @@ public class ProductDTO {
   @DecimalMin(value = "0.01", message = "Price must be greater than zero")
   private BigDecimal price;
 
+  @NotNull(message = "sku is required")
+  private String SKU;
+
   @NotNull(message = "variant is required")
   private List<ProductVariantDTO> variants;
 
