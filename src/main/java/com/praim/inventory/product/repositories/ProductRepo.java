@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface ProductRepo extends CrudRepository<Product, Long>{
-  public Optional<Product> findBySKU(String sku);
+  Optional<Product> findBySKU(String sku);
 }
