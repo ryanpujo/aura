@@ -5,7 +5,9 @@ package com.praim.inventory.product.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.praim.inventory.product.dtos.ProductVariantDTO;
 import com.praim.inventory.product.entities.*;
+import com.praim.inventory.product.mappers.ProductVariantMapper;
 import com.praim.inventory.product.repositories.ProductInventoryRepo;
 import com.praim.inventory.warehouse.repositories.WarehouseRepo;
 import org.springframework.stereotype.Service;
@@ -59,16 +61,15 @@ public class ProductService {
     if (warehouse.isEmpty()) {
       throw new NotFoundException(String.format("warehouse with id %d is not found", warehouseID));
     }
-    Product product = ProductMapper.INSTANCE.toEntity(dto);
+    Product product = findBySKUOrCreateProduct(dto);
     List<ProductCategory> categories = mapCategories(product.getCategories());
     linkImagesToProduct(product.getImages(), product);
-    product.getProductVariants().forEach(variant -> variant.setProduct(product));
     product.setCategories(categories);
-    var createdProduct = productRepo.save(product);
-    int stock = product.getProductVariants().stream().mapToInt(ProductVariant::getStock).sum();
+    var variants = ProductVariantMapper.INSTANCE.toVariants(dto.getVariants());
     var inventory = ProductInventory.builder()
-            .product(createdProduct)
-            .warehouse(warehouse.get()).stock(stock).build();
+            .product(product)
+            .warehouse(warehouse.get()).productVariants(variants).build();
+    variants.forEach(variant -> variant.setInventory(inventory));
     return inventoryRepo.save(inventory).getProduct();
   }
 
@@ -118,6 +119,13 @@ public class ProductService {
    */
   private void linkImagesToProduct(List<ProductImage> images, Product product) {
     images.forEach(image -> image.setProduct(product));
+  }
+
+  private Product findBySKUOrCreateProduct(ProductDTO dto) {
+    return productRepo.findBySKU(dto.getSKU()).orElseGet(() -> {
+      var newProduct = ProductMapper.INSTANCE.toEntity(dto);
+      return productRepo.save(newProduct);
+    });
   }
 }
 
