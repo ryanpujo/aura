@@ -41,9 +41,6 @@ public class Product {
     @Column(nullable = false, unique = true)
     private String SKU;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductVariant> productVariants;
-
     @Column(nullable = false)
     private String imageUrl; // You might still want a main image for quick reference
 

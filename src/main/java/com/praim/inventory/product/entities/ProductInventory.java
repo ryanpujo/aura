@@ -4,6 +4,8 @@ import com.praim.inventory.warehouse.entities.Warehouse;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity(name = "product_inventory")
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "warehouse_id"}))
 @Builder
@@ -28,6 +30,10 @@ public class ProductInventory {
     @EqualsAndHashCode.Exclude
     private Warehouse warehouse;
 
-    @Column(nullable = false)
-    private int stock;
+    @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductVariant> productVariants;
+
+    public int getTotalStock() {
+        return productVariants.stream().mapToInt(ProductVariant::getStock).sum();
+    }
 }
