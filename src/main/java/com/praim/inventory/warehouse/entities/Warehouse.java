@@ -26,6 +26,7 @@ public class Warehouse {
     @OneToOne(cascade = CascadeType.ALL, targetEntity = Address.class)
     private Address address;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private WarehouseStatus status;
 
