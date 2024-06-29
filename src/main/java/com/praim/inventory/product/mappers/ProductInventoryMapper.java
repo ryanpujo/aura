@@ -9,6 +9,8 @@ import org.mapstruct.Mapping;
 @Mapper(uses = {ProductVariantMapper.class, WarehouseMapper.class})
 public interface ProductInventoryMapper {
 
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "product", ignore = true)
     @Mapping(target = "id", ignore = true)
     ProductInventory toProductInventory(ProductInventoryDTO dto);
