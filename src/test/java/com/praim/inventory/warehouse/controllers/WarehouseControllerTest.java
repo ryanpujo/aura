@@ -46,7 +46,7 @@ public class WarehouseControllerTest {
         addressDTO.setAddressLine("jl. mayjen sutoyo");
         addressDTO.setPostalCode(13630);
 
-        warehouseDTO.setAddressDTO(addressDTO);
+        warehouseDTO.setAddress(addressDTO);
         warehouse = WarehouseMapper.INSTANCE.toWarehouse(warehouseDTO);
         warehouse.setId(1L);
     }

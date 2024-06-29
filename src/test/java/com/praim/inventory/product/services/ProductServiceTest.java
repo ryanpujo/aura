@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 
 import com.praim.inventory.product.dtos.ProductVariantDTO;
 import com.praim.inventory.product.entities.ProductInventory;
+import com.praim.inventory.product.mappers.ProductVariantMapper;
 import com.praim.inventory.product.repositories.ProductInventoryRepo;
 import com.praim.inventory.warehouse.entities.Warehouse;
 import com.praim.inventory.warehouse.repositories.WarehouseRepo;
@@ -77,21 +78,41 @@ public class ProductServiceTest {
     dto.setDescription("A fantastic new gadget that will change your life.");
     dto.setPrice(new BigDecimal("49.99"));
     dto.setVariants(variants);
+    dto.setSKU("3345667");
     dto.setImageUrl("https://example.com/gadget.jpg");
     dto.setCategories(categories);
     dto.setImages(images);
     tesProduct = ProductMapper.INSTANCE.toEntity(dto);
     productInventory = ProductInventory.builder()
-            .product(tesProduct).stock(variants.stream().mapToInt(ProductVariantDTO::getStock).sum())
+            .product(tesProduct)
             .warehouse(warehouse)
+            .totalStock(50)
+            .productVariants(ProductVariantMapper.INSTANCE.toVariants(variants))
             .build();
   }
 
   static Stream<Arguments> saveSourceData() {
     setUp();
     return Stream.of(
-      Arguments.of(dto, productInventory, Optional.of(warehouse), null),
-      Arguments.of(dto, null, Optional.empty(), NotFoundException.class)
+      Arguments.of(
+              dto,
+              productInventory,
+              Optional.of(warehouse),
+              Optional.of(tesProduct),
+              null),
+      Arguments.of(
+              dto,
+              productInventory,
+              Optional.of(warehouse),
+              Optional.empty(),
+              null
+      ),
+      Arguments.of(
+              dto,
+              null,
+              Optional.empty(),
+              Optional.empty(),
+              NotFoundException.class)
     );
   }
 
@@ -101,10 +122,13 @@ public class ProductServiceTest {
     ProductDTO arg, 
     ProductInventory exProduct,
     Optional<Warehouse> expectedWarehouse,
+    Optional<Product> expectedProduct,
     Class<? extends Exception> expectedException
     ) {
     when(warehouseRepo.findById(1L)).thenReturn(expectedWarehouse);
+    lenient().when(productRepo.save(any())).thenReturn(tesProduct);
     if (expectedWarehouse.isPresent()) {
+      when(productRepo.findBySKU(anyString())).thenReturn(expectedProduct);
       when(inventoryRepo.save(any())).thenReturn(exProduct);
     }
 
@@ -112,8 +136,12 @@ public class ProductServiceTest {
       var product = productService.save(arg, 1);
       assertEquals(tesProduct, product);
       verify(inventoryRepo, times(1)).save(exProduct);
-      verify(productRepo, times(1)).save(tesProduct);
-    } else {
+      if (expectedProduct.isPresent()) {
+        verify(productRepo, never()).save(tesProduct);
+      } else {
+        verify(productRepo, times(1)).save(tesProduct);
+      }
+    }  else {
       var result = assertThrows(expectedException, () -> productService.save(arg, 1));
       assertEquals(String.format("warehouse with id %d is not found", 1), result.getMessage());
     }

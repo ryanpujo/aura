@@ -35,7 +35,7 @@ public class ProductVariant {
     @ManyToOne
     @EqualsAndHashCode.Exclude
     @Setter
-    private Product product;
+    private ProductInventory inventory;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

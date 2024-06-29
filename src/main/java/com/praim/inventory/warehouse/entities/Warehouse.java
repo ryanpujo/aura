@@ -23,7 +23,7 @@ public class Warehouse {
     @Column(nullable = false)
     private String name;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, targetEntity = Address.class)
     private Address address;
 
     @Column(nullable = false)

@@ -17,5 +17,5 @@ public class WarehouseDTO {
 
     @NotNull(message = "address is required")
     @JsonProperty("address")
-    private AddressDTO addressDTO;
+    private AddressDTO address;
 }

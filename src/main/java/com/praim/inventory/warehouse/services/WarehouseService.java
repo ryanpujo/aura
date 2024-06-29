@@ -20,7 +20,7 @@ public class WarehouseService {
 
     public Warehouse createWarehouse(WarehouseDTO warehouseDTO) {
         var warehouse = WarehouseMapper.INSTANCE.toWarehouse(warehouseDTO);
-        addressService.checkAddressDetailsAvailability(warehouse.getAddress(), warehouseDTO.getAddressDTO());
+        addressService.checkAddressDetailsAvailability(warehouse.getAddress(), warehouseDTO.getAddress());
         return warehouseRepo.save(warehouse);
     }
 }

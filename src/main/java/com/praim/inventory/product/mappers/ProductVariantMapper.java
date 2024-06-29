@@ -13,8 +13,8 @@ public interface ProductVariantMapper {
 
     ProductVariantMapper INSTANCE = Mappers.getMapper(ProductVariantMapper.class);
 
+    @Mapping(target = "inventory", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "product", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "id", ignore = true)
     ProductVariant toVariant(ProductVariantDTO productVariantDTO);

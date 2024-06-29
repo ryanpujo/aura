@@ -62,12 +62,11 @@ public class ProductService {
       throw new NotFoundException(String.format("warehouse with id %d is not found", warehouseID));
     }
     Product product = findBySKUOrCreateProduct(dto);
-    List<ProductCategory> categories = mapCategories(product.getCategories());
-    linkImagesToProduct(product.getImages(), product);
-    product.setCategories(categories);
     var variants = ProductVariantMapper.INSTANCE.toVariants(dto.getVariants());
+    int stock = dto.getVariants().stream().mapToInt(ProductVariantDTO::getStock).sum();
     var inventory = ProductInventory.builder()
             .product(product)
+            .totalStock(stock)
             .warehouse(warehouse.get()).productVariants(variants).build();
     variants.forEach(variant -> variant.setInventory(inventory));
     return inventoryRepo.save(inventory).getProduct();
@@ -124,6 +123,9 @@ public class ProductService {
   private Product findBySKUOrCreateProduct(ProductDTO dto) {
     return productRepo.findBySKU(dto.getSKU()).orElseGet(() -> {
       var newProduct = ProductMapper.INSTANCE.toEntity(dto);
+      List<ProductCategory> categories = mapCategories(newProduct.getCategories());
+      linkImagesToProduct(newProduct.getImages(), newProduct);
+      newProduct.setCategories(categories);
       return productRepo.save(newProduct);
     });
   }

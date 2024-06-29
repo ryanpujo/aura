@@ -8,20 +8,18 @@ import com.praim.inventory.product.dtos.ProductDTO;
 import com.praim.inventory.product.entities.Product;
 
 // Mapper Interface
-@Mapper(uses = {ProductCategoryMapper.class, ProductImageMapper.class, ProductVariantMapper.class})
+@Mapper(uses = {ProductCategoryMapper.class, ProductImageMapper.class, ProductInventoryMapper.class})
 public interface ProductMapper {
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-    @Mapping(target = "inventories", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "id", ignore = true)
-    @Mapping(source = "variants", target = "productVariants")
     Product toEntity(ProductDTO productDTO);
 
+    @Mapping(target = "variants", ignore = true)
     @Mapping(target = "categories", source = "categories")
     @Mapping(target = "images", source = "images")
-    @Mapping(target = "variants", source = "productVariants")
     ProductDTO toDTO(Product product);
 }
 

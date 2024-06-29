@@ -50,7 +50,6 @@ public class ProductMapperTest {
 
         assertEquals(productDTO.getName(), actual.getName());
         assertEquals(productDTO.getDescription(), actual.getDescription());
-        assertEquals(productVariants, actual.getProductVariants());
         assertEquals(productImages, actual.getImages());
     }
 }
