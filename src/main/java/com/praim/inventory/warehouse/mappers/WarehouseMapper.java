@@ -6,7 +6,6 @@ import com.praim.inventory.warehouse.dtos.WarehouseDTO;
 import com.praim.inventory.warehouse.entities.Warehouse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(uses = AddressMapper.class)
@@ -22,5 +21,4 @@ public interface WarehouseMapper {
 
     WarehouseDTO toWarehouseDTO(Warehouse warehouse);
 
-    String map(City value);
 }

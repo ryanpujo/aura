@@ -5,7 +5,6 @@ import com.praim.inventory.product.dtos.ProductDTO;
 import com.praim.inventory.product.dtos.ProductImageDTO;
 import com.praim.inventory.product.dtos.ProductVariantDTO;
 import com.praim.inventory.product.entities.ProductImage;
-import com.praim.inventory.product.entities.ProductVariant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +25,6 @@ public class ProductMapperTest {
 
     private final ProductCategoryDTO productCategoryDTO = new ProductCategoryDTO();
 
-    private List<ProductVariant> productVariants;
 
     private List<ProductImage> productImages;
 
@@ -40,7 +38,6 @@ public class ProductMapperTest {
         productDTO.setImages(List.of(productImageDTO));
         productDTO.setCategories(List.of(productCategoryDTO));
 
-        productVariants = ProductVariantMapper.INSTANCE.toVariants(productDTO.getVariants());
         productImages = ProductImageMapper.INSTANCE.toEntityList(productDTO.getImages());
     }
 
