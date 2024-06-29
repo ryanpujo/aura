@@ -5,8 +5,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.praim.inventory.product.dtos.ProductDTO;
 import com.praim.inventory.product.entities.Product;
-import com.praim.inventory.product.mappers.ProductCategoryMapper;
-import com.praim.inventory.product.mappers.ProductImageMapper;
 import com.praim.inventory.product.mappers.ProductMapper;
 import com.praim.inventory.product.services.ProductService;
 
