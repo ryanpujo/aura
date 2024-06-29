@@ -1,6 +1,5 @@
 package com.praim.inventory.warehouse.mappers;
 
-import com.praim.inventory.address.entities.City;
 import com.praim.inventory.address.mapper.AddressMapper;
 import com.praim.inventory.warehouse.dtos.WarehouseDTO;
 import com.praim.inventory.warehouse.entities.Warehouse;
