@@ -45,11 +45,7 @@ public class ProductController {
   @GetMapping("/{id}")
   public EntityModel<ProductDTO> findByID(@PathVariable("id") Long id) {
     var product = productService.findByID(id);
-    var imageDTOs = ProductImageMapper.INSTANCE.toDTOList(product.getImages());
-    var categoryDTOs = ProductCategoryMapper.INSTANCE.toDTOList(product.getCategories());
     var dto = ProductMapper.INSTANCE.toDTO(product);
-    dto.setImages(imageDTOs);
-    dto.setCategories(categoryDTOs);
     var productEntity = EntityModel.of(dto);
     var link = linkTo(methodOn(this.getClass()).findAll());
     productEntity.add(link.withRel("all-products"));
