@@ -2,6 +2,7 @@ package com.praim.inventory.product.dtos;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.DecimalMin;
@@ -17,6 +18,10 @@ import lombok.Setter;
 @EqualsAndHashCode
 @NoArgsConstructor
 public class ProductDTO {
+
+  @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+  private long id;
+
   @NotNull(message = "Product name is required")
   @Size(min = 2, max = 100, message = "Product name must be between 2 and 100 characters")
   private String name;
@@ -32,7 +37,10 @@ public class ProductDTO {
   private String SKU;
 
   @NotNull(message = "variant is required")
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private List<ProductVariantDTO> variants;
+
+  private Set<ProductInventoryDTO> inventories;
 
   @JsonProperty("image_url")
   @NotNull(message = "main image is required")
