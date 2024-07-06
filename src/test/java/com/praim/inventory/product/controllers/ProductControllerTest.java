@@ -5,7 +5,6 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -17,15 +16,12 @@ import org.springframework.test.web.servlet.ResultMatcher;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.util.stream.Stream;
 
-import com.praim.inventory.common.exceptions.NotFoundException;
 import com.praim.inventory.product.dtos.ProductDTO;
 import com.praim.inventory.product.entities.Product;
 import com.praim.inventory.product.mappers.ProductMapper;
@@ -148,14 +144,14 @@ public class ProductControllerTest {
   }
 
 
-  private static final String errMessage = String.format("Product with id %d is not available", 1);
-  public static Stream<Arguments> findByIDSource() {
-    setUp();
-    return Stream.of(
-      Arguments.of(1L, status().isOk(), jsonPath("$.name").value(tesProduct.getName()), tesProduct),
-      Arguments.of(1L, status().isNotFound(), jsonPath("$.message").value(errMessage), null)
-    );
-  }
+//  private static final String errMessage = String.format("Product with id %d is not available", 1);
+//  public static Stream<Arguments> findByIDSource() {
+//    setUp();
+//    return Stream.of(
+//      Arguments.of(1L, status().isOk(), jsonPath("$.name").value(tesProduct.getName()), tesProduct),
+//      Arguments.of(1L, status().isNotFound(), jsonPath("$.message").value(errMessage), null)
+//    );
+//  }
   
 //  @ParameterizedTest
 //  @MethodSource("findByIDSource")
