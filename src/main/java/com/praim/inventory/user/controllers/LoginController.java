@@ -8,20 +8,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
-@RequestMapping("/users")
-public class UserController {
+public class LoginController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public LoginController(UserService userService) {
         this.userService = userService;
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<Void> createUser(@RequestBody @Valid UserDTO dto) {
         var createdUser = userService.save(dto);
-        var uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(createdUser.getId()).toUri();
+        var uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/users/{id}").buildAndExpand(createdUser.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 }

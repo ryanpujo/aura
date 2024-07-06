@@ -13,7 +13,7 @@ public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "password_hash", ignore = true)
+    @Mapping(target = "passwordHash", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "addresses", ignore = true)
     User toUser(UserDTO user);

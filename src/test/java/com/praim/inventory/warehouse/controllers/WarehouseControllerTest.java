@@ -1,6 +1,7 @@
 package com.praim.inventory.warehouse.controllers;
 
 import com.praim.inventory.address.dtos.AddressDTO;
+import com.praim.inventory.config.SecurityConfigTest;
 import com.praim.inventory.warehouse.WarehouseStatus;
 import com.praim.inventory.warehouse.dtos.WarehouseDTO;
 import com.praim.inventory.warehouse.entities.Warehouse;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -23,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(WarehouseController.class)
 @AutoConfigureMockMvc
+@ContextConfiguration(classes = {WarehouseController.class, SecurityConfigTest.class})
 public class WarehouseControllerTest {
 
     @MockBean

@@ -9,7 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity(name = "accounts")
+@Entity(name = "users")
 @Builder
 @Getter
 @AllArgsConstructor
@@ -31,8 +31,9 @@ public class User {
     @Column(nullable = false, length = 100, unique = true)
     private String email;
 
-    @Column()
-    private String password_hash;
+    @Column(nullable = false)
+    @Setter
+    private String passwordHash;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -46,8 +47,8 @@ public class User {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "account_address",
-            joinColumns = @JoinColumn(name = "account_id"),
+            name = "user_address",
+            joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "address_id")
     )
     private List<Address> addresses;

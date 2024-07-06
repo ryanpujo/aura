@@ -1,5 +1,6 @@
 package com.praim.inventory.user.controllers;
 
+import com.praim.inventory.config.SecurityConfigTest;
 import com.praim.inventory.user.dtos.UserDTO;
 import com.praim.inventory.user.entities.User;
 import com.praim.inventory.user.mappers.UserMapper;
@@ -11,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.Mockito.when;
@@ -18,9 +20,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(UserController.class)
+@WebMvcTest(LoginController.class)
 @AutoConfigureMockMvc
-public class UserControllerTest {
+@ContextConfiguration(classes = {SecurityConfigTest.class, LoginController.class})
+public class LoginControllerTest {
 
     @MockBean
     private UserService userService;
@@ -51,7 +54,7 @@ public class UserControllerTest {
                       "password": "password123"
                     }
                 """;
-        mockMvc.perform(post("/users")
+        mockMvc.perform(post("/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andExpect(status().isCreated())
